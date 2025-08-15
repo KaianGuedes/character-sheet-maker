@@ -1,2 +1,21 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+    import Step from './step.svelte'
+</script>
+
+<div>
+    <Step></Step>
+</div>
+
+<style lang="scss">
+    :global(body) {
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    div {
+        height: 100%;
+        width: 100%;
+        background-color: cadetblue;
+    }
+</style>
