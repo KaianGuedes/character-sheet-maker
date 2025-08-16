@@ -1,27 +1,43 @@
 <script lang="ts">
     import { Sheet, Step } from '$lib/sheet'
+    import { onMount, tick } from 'svelte';
 
     let { sheet }: { sheet: Sheet } = $props();
 
     let currentIndex: number = $state(0);
     let currentStep: Step = $derived(sheet.getStep(currentIndex));
+    let currentTimeoutId: NodeJS.Timeout;
+    let maxVisibleOptionIndex: number = $state(0);
 
-    const isFirst = () => {
-        return (currentIndex === 0);
-    }
+    const isFirst = () => (currentIndex === 0);
+    const isLast = () => (currentIndex === sheet.getSteps().length - 1);
 
-    const isLast = () => {
-        return (currentIndex === sheet.getSteps().length - 1);
-    }
-
+    onMount(() => {
+        revealOptions()
+    })
+    
     const next = () => {
         if (isLast()) return;
+        clearTimeout(currentTimeoutId);
         currentIndex++;
+        maxVisibleOptionIndex = 0;
+        revealOptions()
     }
 
     const previous = () => {
         if (isFirst()) return;
+        clearTimeout(currentTimeoutId);
         currentIndex--;
+        maxVisibleOptionIndex = 0;
+        revealOptions()
+    }
+
+    function revealOptions() {
+        if ((maxVisibleOptionIndex == currentStep.options.length)) return;
+        tick().then(() => currentTimeoutId = setTimeout(() => {
+            maxVisibleOptionIndex++;
+            revealOptions();
+        }, (250 / currentStep.options.length)));
     }
 </script>
 
@@ -29,8 +45,13 @@
     <div class="content">
         <p class="label">{currentStep.label}</p>
         <div class="options">
-            {#each currentStep.options as option(option.uuid)}
-                <button class="option">{option.getText()}</button>
+            {#each currentStep.options as option, index (option.uuid)}
+                <button
+                        class="option"
+                        style:opacity={index < maxVisibleOptionIndex ? "1" : "0"}
+                >
+                    {option.getText()}
+                </button>
             {/each}
         </div>
     </div>
@@ -61,7 +82,6 @@
         flex-direction: column;
         min-height: 25%;
         max-width: 80%;
-        background-color: darksalmon;
         .label {
             margin-top: 20px;
             margin-bottom: 20px;
@@ -69,6 +89,7 @@
         }
         .options {
             .option {
+                transition: opacity 1s ease;
                 flex: none;
             }
             &::after {
@@ -93,9 +114,23 @@
     }
 
     button {
+        border: 0;
+        background-color: rgba(255, 255, 255, 0.15);
+        border-radius: 2px;
+        padding: 5px;
+        color: white;
+        cursor: pointer;
+
+        &:disabled {
+            color: rgba(217, 152, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
         &:disabled:hover {
+            background-color: rgba(255, 255, 255, 0.05);
             cursor: not-allowed;
         }
-        cursor: pointer;
     }
 </style>

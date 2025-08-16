@@ -42,6 +42,7 @@
         margin: 0;
         height: 100vh;
         width: 100vw;
-        background-color: cadetblue;
+        background: #453a59;
+        background: linear-gradient(90deg,rgba(105, 70, 158, 1) 0%, rgba(99, 33, 95, 1) 98%);
     }
 </style>
