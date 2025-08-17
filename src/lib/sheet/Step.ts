@@ -17,9 +17,9 @@ export class Step {
         this.selectedOptionIndex = index;
     }
 
-    getSelectedOption(): Option | undefined {
+    getSelectedOption(): number | undefined {
         if (this.selectedOptionIndex === undefined) return undefined;
-        return this.options[this.selectedOptionIndex];
+        return this.selectedOptionIndex;
     }
 
     haveSelectedOption(): boolean {
