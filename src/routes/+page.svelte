@@ -1,36 +1,17 @@
 <script lang="ts">
     import Wizard from './wizard.svelte'
     import { Option, Sheet, Step } from "$lib/sheet";
+    import data from '$lib/data.json'
 
-    // Class Step
-    const classOptions: Option[] = [];
-    const classes: string[] = ["Warrior", "Mage", "Archer"];
-    for (const value of classes) {
-        classOptions.push(new Option(value));
-    }
-
-    // Race Step
-    const raceOptions: Option[] = [];
-    const races: string[] = [
-        "Human", "Elf", "Dwarf", "Goblin",
-        "Orc","Lizard", "Fairy", "Dragonborn"
-    ];
-    for (const value of races) {
-        raceOptions.push(new Option(value));
-    }
-
-    // Gender Step
-    const genderOptions: Option[] = [];
-    const genders: string[] = ["Male", "Female"];
-    for (let value in genders) {
-        genderOptions.push(new Option(genders[value]));
-    }
-
-    // Sheet Creation
     const steps: Step[] = [];
-    steps.push(new Step("Choose your race", raceOptions));
-    steps.push(new Step("Choose your gender", genderOptions));
-    steps.push(new Step("Choose your class", classOptions))
+
+    data.steps.forEach(step => {
+        const options: Option[] = [];
+        step.options.forEach((value) => {
+            options.push(new Option(value));
+        })
+        steps.push(new Step(step.title, options))
+    })
 
     const sheet: Sheet = new Sheet(steps);
 </script>
@@ -39,6 +20,8 @@
 
 <style lang="scss">
     :global(body) {
+        overflow: hidden;
+        scrollbar-width: none;
         margin: 0;
         height: 100vh;
         width: 100vw;

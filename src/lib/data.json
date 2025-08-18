@@ -1,0 +1,26 @@
+{
+  "steps": [
+    {
+      "title": "Choose your race",
+      "options": [
+        "Human", "Elf", "Dwarf", "Goblin",
+        "Orc", "Lizard", "Fairy", "Dragonborn",
+        "Minotaur", "Centaur", "Lich", "Troll",
+        "Merfolk", "Ogre", "Gnome", "Giant",
+        "Skeleton", "Zombie", "Werewolf"
+      ]
+    },
+    {
+      "title": "Choose your gender",
+      "options": [
+        "Male", "Female"
+      ]
+    },
+    {
+      "title": "Choose your class",
+      "options": [
+        "Warrior", "Mage", "Archer"
+      ]
+    }
+  ]
+}
